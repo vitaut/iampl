@@ -1,4 +1,4 @@
 iampl
 =====
 
-ipython
+AMPL magics for IPython.
