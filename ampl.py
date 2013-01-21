@@ -1,4 +1,4 @@
-# This file defines the AMPL magic.
+# IPython extension defining the AMPL magic.
 
 import errno
 import signal
@@ -114,18 +114,19 @@ class AMPLMagic(Magics):
         """Run a cell with an AMPL interpreter
         
         The `%%ampl` line specifies that the rest of the cell
-        is interpreted as AMPL code.
-        
-        Examples
-        --------
-        ::
+        is interpreted as AMPL code::
         
             In [1]: %%ampl
                ...: var x >= 42;
                ...: minimize o: x;
                ...: solve;
+
             MINOS 5.51: optimal solution found.
             0 iterations, objective 42
+
+        After executing the code all the AMPL sets, parameters,
+        variables, objectives and constraints become available as
+        Python objects.
         """
 
         # Undefine old entities.
@@ -184,4 +185,6 @@ class AMPLMagic(Magics):
         sys.stdout.write(out)
         sys.stdout.flush()
 
-get_ipython().register_magics(AMPLMagic)
+def load_ipython_extension(ip):
+    """Load the extension in IPython."""
+    ip.register_magics(AMPLMagic)
