@@ -1,10 +1,11 @@
 IAMPL
 =====
 
-AMPL magics for IPython.
+IPython extension for working with AMPL.
 
-To install IAMPL, place `ampl.py <https://raw.github.com/vitaut/iampl/master/ampl.py>`__
-in the directory ``~/.config/ipython/profile_default/startup``
+Use the following command to install the extension::
+
+    %install_ext https://raw.github.com/vitaut/iampl/master/ampl.py
 
 See `AMPL magic: using IPython as an interface to AMPL
 <http://zverovich.net/2013/01/08/ampl-magic-using-ipython-as-an-interface-to-ampl.html>`__
