@@ -8,6 +8,14 @@ from subprocess import Popen, PIPE
 from IPython.core.magic import Magics, magics_class, cell_magic
 from IPython.utils import py3compat
 
+def try_parse_float(value):
+    """If value is a string representing a floating point number, parse the string
+       and return the number. Otherwise return value itself."""
+    try:
+        return float(value)
+    except ValueError:
+        return value
+
 class AMPLEntity:
     """AMPL entity such as a parameter, a variable, an objective
        or a constraint"""
@@ -85,8 +93,6 @@ class AMPLMagic(Magics):
         if nkeycols == 0:
             return float(data.rstrip("\n")) # TODO: convert to float optionally
         data = data.split("\n")[0:nrows]
-        if nkeycols == 1 and ndatacols == 0:
-            return set(data)
         result = {}
         for line in data:
             values = line.split(",")
@@ -94,7 +100,13 @@ class AMPLMagic(Magics):
                 key = values[0]
             else:
                 key = tuple(values[:nkeycols])
-            result[key] = float(values[nkeycols]) # TODO: convert to float optionally
+            if ndatacols == 1:
+                value = try_parse_float(values[nkeycols])
+            else:
+                value = None
+            result[key] = value
+        if ndatacols == 0:
+            return result.keys()
         return result
 
     def _write(self, input):
