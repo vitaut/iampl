@@ -53,7 +53,7 @@ class AMPLMagic(Magics):
         self.process = None
         self.entities = {}
 
-    def _read(self):
+    def _read(self, silent=True):
         """Read AMPL output until the next prompt"""
         stdout = self.process.stdout
         out = ""
@@ -70,6 +70,9 @@ class AMPLMagic(Magics):
             # TODO: handle errors
             if command.startswith("prompt"):
                 break
+            if not silent:
+               sys.stdout.write(block);
+               sys.stdout.flush()
             out += block
         return out
 
@@ -164,9 +167,9 @@ class AMPLMagic(Magics):
         try:
             if first_time:
                 # Read the prompt.
-                self._read()
+                self._read(silent=False)
             self._write(cell.encode('utf8', 'replace'))
-            out = self._read()
+            out = self._read(silent=False)
             for set in ["_PARS", "_SETS", "_VARS", "_OBJS", "_CONS"]:
                 for p in self._read_data(set):
                     self._add_entity(p)
@@ -191,11 +194,8 @@ class AMPLMagic(Magics):
                     % (p.pid, e)
             return
 
-        out = py3compat.bytes_to_str(out)
         # TODO: add an option to capture the AMPL output
         # See https://github.com/ipython/ipython/blob/master/IPython/core/magics/script.py
-        sys.stdout.write(out)
-        sys.stdout.flush()
 
 def load_ipython_extension(ip):
     """Load the extension in IPython."""
