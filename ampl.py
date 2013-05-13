@@ -175,7 +175,7 @@ class AMPLMagic(Magics):
             try:
                 # Send SIGINT to the AMPL process group that includes ampl
                 # itself and a currently running solver if any.
-	        os.killpg(os.getpgid(p.pid), signal.SIGINT)
+                os.killpg(os.getpgid(p.pid), signal.SIGINT)
                 self._read(silent=False)
             except OSError:
                 pass
