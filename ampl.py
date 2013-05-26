@@ -1,6 +1,7 @@
 # IPython extension defining the AMPL magic.
 
 import errno
+import os
 import signal
 import sys
 import time
@@ -151,7 +152,7 @@ class AMPLMagic(Magics):
 
         first_time = not self.process
         if first_time:
-            cmd = ["ampl", "-b"]
+            cmd = ["ampl", "-g", "-b"]
             try:
                 p = Popen(cmd, stdout=PIPE, stdin=PIPE)
             except OSError as e:
@@ -170,29 +171,21 @@ class AMPLMagic(Magics):
                 self._read(silent=False)
             self._write(cell.encode('utf8', 'replace'))
             out = self._read(silent=False)
-            for set in ["_PARS", "_SETS", "_VARS", "_OBJS", "_CONS"]:
-                for p in self._read_data(set):
-                    self._add_entity(p)
         except KeyboardInterrupt:
             try:
-                p.send_signal(signal.SIGINT)
-                time.sleep(0.1)
-                if p.poll() is not None:
-                    print "Process is interrupted."
-                    return
-                p.terminate()
-                time.sleep(0.1)
-                if p.poll() is not None:
-                    print "Process is terminated."
-                    return
-                p.kill()
-                print "Process is killed."
+                # Send SIGINT to the AMPL process group that includes ampl
+                # itself and a currently running solver if any.
+                os.killpg(os.getpgid(p.pid), signal.SIGINT)
+                self._read(silent=False)
             except OSError:
                 pass
             except Exception as e:
                 print "Error while terminating subprocess (pid=%i): %s" \
                     % (p.pid, e)
             return
+        for set in ["_PARS", "_SETS", "_VARS", "_OBJS", "_CONS"]:
+            for p in self._read_data(set):
+                self._add_entity(p)
 
         # TODO: add an option to capture the AMPL output
         # See https://github.com/ipython/ipython/blob/master/IPython/core/magics/script.py
