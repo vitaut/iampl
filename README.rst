@@ -1,14 +1,14 @@
-=====
-IAMPL
-=====
+=========================
+IPython interface to AMPL
+=========================
 
-An IPython extension for working with AMPL.
+This is an IPython extension for working with AMPL.
 
 See `AMPL magic: using IPython as an interface to AMPL
 <http://zverovich.net/2013/01/08/ampl-magic-using-ipython-as-an-interface-to-ampl.html>`__
-for an introduction to IAMPL.
+for an introduction on how to use this extension.
 
-IAMPL is licensed under the terms of the `BSD license <COPYING.txt>`__.
+It is licensed under the terms of the `BSD license <COPYING.txt>`__.
 
 Installation
 ============
