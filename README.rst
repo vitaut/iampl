@@ -13,10 +13,18 @@ IAMPL is licensed under the terms of the `BSD license <COPYING.txt>`__.
 Installation
 ============
 
+Using `pip`
+-----------
+
+The following command installs the ampl extension using
+`pip <http://www.pip-installer.org/en/latest/>`__::
+
+    $ pip ampl
+
 Using `easy_install`
 --------------------
 
-Use the following command to install the extension using
+The following command installs the ampl extension using
 `easy_install <http://pythonhosted.org/setuptools/easy_install.html>`__::
 
     $ easy_install ampl
