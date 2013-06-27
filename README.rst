@@ -19,7 +19,7 @@ Using `pip`
 The following command installs the ampl extension using
 `pip <http://www.pip-installer.org/en/latest/>`__::
 
-    $ pip ampl
+    $ pip install ampl
 
 Using `easy_install`
 --------------------
