@@ -29,6 +29,19 @@ The following command installs the ampl extension using
 
     $ easy_install ampl
 
+Usage
+=====
+
+To load the ampl extension while IPython is running, use the ``%load_ext`` magic::
+
+    In [1]: %load_ext ampl
+
+To load it each time IPython starts, list it in your configuration file:
+
+.. code-block:: python
+
+    c.InteractiveShellApp.extensions = ['ampl']
+
 Credits
 =======
 
