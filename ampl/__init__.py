@@ -1,5 +1,6 @@
 # IPython extension defining the AMPL magic.
 
+from __future__ import print_function
 import errno
 import os
 import signal
@@ -157,7 +158,7 @@ class AMPLMagic(Magics):
                 p = Popen(cmd, stdout=PIPE, stdin=PIPE)
             except OSError as e:
                 if e.errno == errno.ENOENT:
-                    print "Couldn't find program: %r" % cmd[0]
+                    print("Couldn't find program: %r" % cmd[0])
                     return
                 else:
                     raise
@@ -180,8 +181,8 @@ class AMPLMagic(Magics):
             except OSError:
                 pass
             except Exception as e:
-                print "Error while terminating subprocess (pid=%i): %s" \
-                    % (p.pid, e)
+                print("Error while terminating subprocess (pid=%i): %s" \
+                    % (p.pid, e))
             return
         for set in ["_PARS", "_SETS", "_VARS", "_OBJS", "_CONS"]:
             for p in self._read_data(set):
