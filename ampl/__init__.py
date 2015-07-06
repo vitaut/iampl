@@ -60,10 +60,10 @@ class AMPLMagic(Magics):
         stdout = self.process.stdout
         out = ""
         while True:
-            header = ""
+            header = b""
             while True:
                 c = stdout.read(1)
-                if c == " ":
+                if c == b" ":
                     break
                 header += c
             length = int(py3compat.bytes_to_str(header))
@@ -117,8 +117,8 @@ class AMPLMagic(Magics):
     def _write(self, input):
         """Write input to AMPL"""
         stdin = self.process.stdin
-        stdin.write("%d " % len(input))
-        stdin.write(input)
+        stdin.write(py3compat.encode("%d " % len(input), 'utf8'))
+        stdin.write(py3compat.encode(input, 'utf8'))
         stdin.flush()
 
     def _add_entity(self, name):
@@ -147,7 +147,7 @@ class AMPLMagic(Magics):
         """
 
         # Undefine old entities.
-        for name, entity in self.entities.iteritems():
+        for name, entity in self.entities.items():
             if self.shell.user_ns.get(name) == entity:
                 del self.shell.user_ns[name]
 
@@ -170,7 +170,7 @@ class AMPLMagic(Magics):
             if first_time:
                 # Read the prompt.
                 self._read(silent=False)
-            self._write(cell.encode('utf8', 'replace'))
+            self._write(cell)
             out = self._read(silent=False)
         except KeyboardInterrupt:
             try:
